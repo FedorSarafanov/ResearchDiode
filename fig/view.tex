@@ -1,0 +1,190 @@
+\documentclass[tikz]{standalone}
+
+\usepackage[english,russian]{babel}
+\usepackage[T2A,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\input{tikz.tex} 
+\usepackage[europeanresistors,americaninductors]{circuitikz}
+\usepackage
+    {
+        tikz,
+        pgfplots,
+        verbatim,
+        bm
+    }
+\usetikzlibrary
+    {
+        arrows,
+        patterns,
+        angles,
+        quotes,
+        arrows.meta,
+        arrows.spaced,
+        calc, 
+        3d,  
+        fit,
+        backgrounds, 
+        positioning
+    }
+\usetikzlibrary{fadings,through}
+\tikzset
+    {
+        media/.style={font={\footnotesize\sffamily}},
+        wave/.style={
+            decorate,decoration={snake,post length=1.4mm,amplitude=2mm,
+                segment length=1mm},thick},   
+    }
+\tikzset{
+  pics/carc/.style args={#1:#2:#3}{
+    code={
+      \draw[pic actions] (#1:#3) arc(#1:#2:#3);
+    }
+  }
+}
+
+\input{disp}
+\begin{document}
+\begin{tikzpicture}
+
+
+\draw[pattern=north east lines] (0,0) rectangle (12.6,-0.2);
+\begin{scope}
+    \input{unit_utg9010c}
+    \draw (2.2,2.5) node {1} circle (0.7em);
+    % высота 2см, ширина 5см. Нода подключения - выход gen-output
+\end{scope}
+
+\begin{scope}[xshift=5.1cm]
+    \draw (3.5,3) node {2} circle (0.7em);
+
+
+
+    \draw[rounded corners=0.5pt,fill=gray!10!white] (0,0) rectangle (7.5,2.5);
+
+
+    \begin{scope}[xshift=2.4cm]
+    \draw[rounded corners=2pt,fill=gray] (0.25,0.25) rectangle (2.5,2.25);
+    \draw[fill=white] (0.4,0.75) -- 
+        ++ (0.05,1.25) -- 
+        ++ (1.85,0) --
+        ++ (0.05,-1.25) -- cycle;
+    \draw($(0.4,0.59)!0.5!(2.5-0.15,0.59)$) coordinate (o);
+    \begin{scope}
+        \draw[fill=white!20!gray] (0.35,0.35) circle (2pt);
+        \draw[fill=white!20!gray] (0.35,2.15) circle (2pt);
+        \draw[fill=white!20!gray] (2.40,0.35) circle (2pt);
+        \draw[fill=white!20!gray] (2.40,2.15) circle (2pt);
+        \draw[fill=black!50!gray] (o) circle (0.07);
+        \xdef\ra{1.3}
+            \foreach \i in {45,49.5,...,135} {
+              \draw[fill=white,draw=black] ($(o)+(\i:\ra-0.15)$) -- ($(o)+(\i:{\ra-0.1})$);
+            }
+        \clip (0.4,0.75) -- 
+            ++ (0.05,1.25) -- 
+            ++ (1.85,0) --
+            ++ (0.05,-1.25) -- cycle;
+        \draw[-latex] (o) -- ++ (130:1.12);
+        \draw[fill=black] (o) circle (0.2);
+        \draw ($(o)+(0,0.7)$) node {A};
+    \end{scope}        
+    \end{scope}
+   \begin{scope}[xshift=0cm]
+    \draw[rounded corners=2pt,fill=gray] (0.25,0.25) rectangle (2.5,2.25);
+    \draw[fill=white] (0.4,0.75) -- 
+        ++ (0.05,1.25) -- 
+        ++ (1.85,0) --
+        ++ (0.05,-1.25) -- cycle;
+    \draw($(0.4,0.59)!0.5!(2.5-0.15,0.59)$) coordinate (o);
+    \begin{scope}
+        \draw[fill=white!20!gray] (0.35,0.35) circle (2pt);
+        \draw[fill=white!20!gray] (0.35,2.15) circle (2pt);
+        \draw[fill=white!20!gray] (2.40,0.35) circle (2pt);
+        \draw[fill=white!20!gray] (2.40,2.15) circle (2pt);
+        \draw[fill=black!50!gray] (o) circle (0.07);
+        \xdef\ra{1.3}
+            \foreach \i in {45,49.5,...,135} {
+              \draw[fill=white,draw=black] ($(o)+(\i:\ra-0.15)$) -- ($(o)+(\i:{\ra-0.1})$);
+            }
+        \clip (0.4,0.75) -- 
+            ++ (0.05,1.25) -- 
+            ++ (1.85,0) --
+            ++ (0.05,-1.25) -- cycle;
+        \draw[-latex] (o) -- ++ (130:1.12);
+        \draw[fill=black] (o) circle (0.2);
+        \draw ($(o)+(0,0.7)$) node {V};
+    \end{scope}        
+    \end{scope}
+
+    \draw[fill=gray!50!white] (5.25,2) coordinate (d1) circle (2pt);
+    \draw[fill=gray!50!white] (6,2) coordinate (d2) circle (2pt);
+
+    \draw[fill=gray!50!white] (5.25,1.6) coordinate (r1) circle (2pt);
+    \draw[fill=gray!50!white] (6,1.6) coordinate (r2) circle (2pt);
+
+    \draw (r1) -- ++ (0.1,0);
+    \draw (r2) -- ++ (-0.1,0);
+    \draw[fill=green!50!black] ($(r1)+(0.1,0)$) rectangle ($(r2)+(-0.1,0.13)$);
+
+    \draw[thick] (d1) -- (d2);
+    \draw[very thick] ($(d1)!0.2!(d2)$) -- ($(d1)!0.8!(d2)$);
+    \draw[very thick] ($(d1)!0.2!(d2)-(0,0.15)$) -- ++ (0,0.3);
+    \draw[line width=8pt] ($(d1)!0.4!(d2)-(0,0.07)$) -- ++ (0,0.14);
+
+    \foreach \x in {5.25}{
+        \draw (\x,1) coordinate (node-in);
+        \draw[fill=gray, draw=white, line width=.5pt] (node-in) circle (4pt);
+        \draw[fill=white,draw=none] (node-in) circle (2pt);
+        \draw[fill=black,draw=none] (node-in) circle (1pt);
+    }
+
+    \draw[fill=white] (7,2) circle (0.25);
+    \draw[fill=gray!50!white] (7,2) circle (0.2);
+
+
+    \draw[fill=white] (7,1.25) circle (0.25);
+    \draw[fill=gray!50!white] (7,1.25) circle (0.2);
+
+    \draw[rounded corners=3pt,gray](6.5,2) -- ++ (-0.2,0) |- (6.5,1.25);
+
+
+    \foreach \x in {5.5,6,...,7}{
+        \draw (\x,0.5) coordinate (in);
+        % \draw[fill=gray, draw=white, line width=.5pt] (in) circle (4pt);
+        \draw[fill=gray!50!white,draw=none] (in) circle (5pt);
+
+        \draw[fill=black,draw=none] (in) circle (1pt);
+        \draw[fill=gray!95!black] (in) ++ (0,4pt) -- ++ (-30:4pt) -- ++ (-90:4pt) -- ++ (-150:4pt) -- ++ (-210:4pt)
+        -- ++ (-270:4pt) --cycle;
+        \draw[fill=gray!50!white,draw=none] (in) circle (3pt);
+        \draw[line width=3pt, gray!40!black,line cap=round] (\x,0.5) -- ++ (0,-0.12);
+    }
+
+    \draw[->,gray] (7.33,0.25) -- ++ (0,.5);
+
+
+% \xdef\darkness{0}
+% \xdef\op{0.3}
+
+% \xdef\SIZE{7.5}
+
+% \draw[step=1.0,blue,thick,opacity=\op] (0,0) grid (8,\SIZE);
+% \draw[step=0.5,blue,very thin,opacity=\op] (0,0) grid (8,\SIZE);
+
+% \foreach \i in {0,1,...,\SIZE} {
+%   \draw[opacity=\op] (0,\i) node [left] {\i};
+%   \draw[opacity=\op] (\i,0) node [below] {\i};
+% }
+\end{scope}
+
+\draw[line width=1.2pt,red,double,rounded corners] 
+    (node-in) 
+    -- ++ (0,-0.9)
+    -|  (gen-output);
+
+
+
+
+
+
+\end{tikzpicture} 
+\end{document}
